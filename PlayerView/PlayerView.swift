@@ -34,6 +34,7 @@ struct PlayerView : View {
     @State var width : CGFloat = 0
     @State var isPlaying : Bool = false
     @State var songLength = 0
+    @State var clickCount = 0
     // var slider : UISlider!
     
     @ObservedObject var data : internalData
@@ -91,7 +92,7 @@ struct PlayerView : View {
         let storage = Storage.storage().reference(forURL: self.song.file)
         storage.downloadURL { (url, error) in
             if error != nil {
-                print(error)
+                print(error!)
             }
             else {
                 do {
@@ -145,6 +146,43 @@ struct PlayerView : View {
             player.play()
         }
     }
+    
+    /*func next() {
+        position = 0
+        if let currentIndex = album.songs.firstIndex(of: song) {
+            if currentIndex == album.songs.count - 1 {
+                song = album.songs[0]
+            }
+            else {
+                song = album.songs[currentIndex + 1]
+            }
+            restartPlayback()
+        }
+    }
+    
+    func previous() {
+        position = 0
+        if let currentIndex = album.songs.firstIndex(of: song) {
+            if currentIndex == 0 {
+                song = album.songs[album.songs.count - 1]
+            }
+            else {
+                song = album.songs[currentIndex - 1]
+            }
+            restartPlayback()
+        }
+    }
+    
+
+
+    
+    func restartPlayback() {
+        if isPlaying {
+            player.pause()
+            player.seek(to: CMTime.zero)
+            player.play()
+        }
+    }*/
     
     func next() {
         position = 0

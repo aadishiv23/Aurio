@@ -102,6 +102,7 @@ struct AlbumArt : View {
                 } */
             }).frame(width: 170, height: 170, alignment: .center).clipped().cornerRadius(15).shadow(radius: 20).padding(20)
         }).buttonStyle(PlainButtonStyle())
+            .animation(.easeInOut, value: 2)
     }
 }
 

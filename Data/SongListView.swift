@@ -8,6 +8,20 @@
 import Foundation
 import SwiftUI
 
+struct RoundedCorners: Shape {
+    var radius: CGFloat
+    var corners: UIRectCorner
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
+    }
+}
+
 struct SongListView : View {
     var album : Album
     //var song : Album
@@ -17,17 +31,22 @@ struct SongListView : View {
     var body: some View {
         ZStack {
             Image(album.image).resizable().opacity(0.5)
-            Blur(style: .systemChromeMaterialDark).edgesIgnoringSafeArea(.all)
+            Blur(style: .prominent).edgesIgnoringSafeArea(.all)
             VStack {
                 ScrollView {
                     //Spacer()
                     AlbumObj(album: album, isWithText: false, data: data)
-                    Text(album.name).font(.title).fontWeight(.bold).foregroundColor(.white)
-                    Spacer().padding(60)
+                    Text(album.name).font(.title).fontWeight(.bold).foregroundColor(.black)
+                    Spacer().padding(40)
                     ScrollView {
                         ZStack {
                             
-                            Color.white.cornerRadius(20).shadow(radius: 10).edgesIgnoringSafeArea(.bottom)
+                            // Color.white.cornerRadius(20).shadow(radius: 10).edgesIgnoringSafeArea(.bottom)
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(Color.white)
+                                .shadow(radius: 10)
+                                .clipShape(RoundedCorners(radius: 20, corners: [.topLeft, .topRight]))
+                                .edgesIgnoringSafeArea(.bottom)
                             VStack {
                                 if self.data.albums.first == nil {
                                     EmptyView()
@@ -42,7 +61,9 @@ struct SongListView : View {
                                     })
                                 }
                             }.edgesIgnoringSafeArea(.bottom)
+                            Spacer()
                         }
+                        Spacer()
                     }/*.edgesIgnoringSafeArea(.bottom).frame( height: 200, alignment: .center)*/
                 }
             }
