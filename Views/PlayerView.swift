@@ -35,7 +35,12 @@ struct PlayerView : View {
     @State var isPlaying : Bool = false
     @State var songLength = 0
     @State var clickCount = 0
+    @State private var albumArtSize: CGFloat = 100 // default size
     // var slider : UISlider!
+    
+    var nowPlaying: (album: Album, song: Song) {
+        return (album, song)
+    }
     
     @ObservedObject var data : internalData
     var body: some View {
@@ -44,7 +49,12 @@ struct PlayerView : View {
             Blur(style: .systemChromeMaterialDark).edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer()
-                AlbumObj(album: album, isWithText: false, data: data).accessibilityLabel("The album art for \(album.name)")
+                AlbumObj(album: album, isWithText: false, data: data)
+                    //.scaledToFit()
+                    //.frame(width: albumArtSize, height: albumArtSize)
+                    //.animation(.easeInOut, value: 0.5)
+                //Image(album.image).scaledToFit().frame(width: albumArtSize, height: albumArtSize).animation(.easeInOut(duration: 0.8), value: 0.5)
+                Spacer()
                 Text(song.name).font(.title).fontWeight(.bold).foregroundColor(.white)
                 Spacer().padding(20)
                 ZStack {
@@ -140,10 +150,12 @@ struct PlayerView : View {
     func playPause() {
         self.isPlaying.toggle()
         if isPlaying == false {
+            albumArtSize = 100
             player.pause()
         }
         else {
             player.play()
+            albumArtSize = 120
         }
     }
     
@@ -217,10 +229,16 @@ struct PlayerView : View {
     }
 }
 
-struct Previews_PlayerView_Previews: PreviewProvider {
+//struct PlayerView_Preview: PreviewProvider {
+    /*static let album = Album(name: "AlbumName", image: <#T##String#>, songs: <#T##[Song]#>)
+    static let album = Album(name: "Album name", artist: "Artist name", image: "albumImage", songs: [])
+    static let song = Song(name: "Song name", file: "https://www.example.com/song.mp3", time: "3:45")
+    static let data = internalData()
+
     static var previews: some View {
-        Text("Hello, World!")
-    }
-}
+        PlayerView(album: album, song: song, data: data)
+    }*/
+
+//}
 
 

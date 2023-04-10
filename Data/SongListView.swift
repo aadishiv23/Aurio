@@ -27,6 +27,8 @@ struct SongListView : View {
     //var song : Album
     @ObservedObject var data : internalData
     @State private var currentAlbum : Album?
+    @State var isPlayerViewPresented = false // boolean to keep track of whether player view is present or not
+    var animationAmt = 2
     
     var body: some View {
         ZStack {
@@ -67,6 +69,14 @@ struct SongListView : View {
                     }/*.edgesIgnoringSafeArea(.bottom).frame( height: 200, alignment: .center)*/
                 }
             }
+        }
+        .overlay(
+                NowPlayingBar(isPlayerViewPresented: self.$isPlayerViewPresented)
+                    .animation(.default, value: animationAmt)
+                        // .animation(.default) // add animation to the bar when it appears or disappears
+        )
+        .onDisappear {
+                self.isPlayerViewPresented = false // set boolean to false when leaving the view
         }
     }
 }

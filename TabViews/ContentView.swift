@@ -31,25 +31,30 @@ struct Song : Hashable {
 
 struct ContentView: View {
     @ObservedObject var data : internalData
+    @State var isPlayerViewPresented: Bool = false
     //@State var audioPlayer: AVAudioPlayer
     var body: some View {
-        TabView() {
-            UploadedMusicView(data: data).tabItem() {
-                Image(systemName: "house")
-                Text("Home")
-                    .accessibilityLabel("Streamed music window")
-                    .accessibilityHint("By pressing the home icon, you will be able to access the Uploaded Music page and be able to browse and stream music")
+       // VStack(spacing: 0) {
+            //NowPlayingBar(isPlayerViewPresented: $isPlayerViewPresented)
+              //  .padding(.bottom)
+            TabView() {
+                UploadedMusicView(data: data).tabItem() {
+                    Image(systemName: "house")
+                    Text("Home")
+                        .accessibilityLabel("Streamed music window")
+                        .accessibilityHint("By pressing the home icon, you will be able to access the Uploaded Music page and be able to browse and stream music")
                     
-            }
-            // need to reassess localmusicview
-            LocalMusicView().tabItem() {
-                Image(systemName: "folder")
-                Text("Files")
-                    .accessibilityLabel("Local files window")
-                    .accessibilityHint("By pressing the files icon, you will be able to import local files and be able to upload them to the cloud. From there, you will then be able to listen to your songs through the Uploaded Music page")
+                }
+                // need to reassess localmusicview
+                LocalMusicView().tabItem() {
+                    Image(systemName: "folder")
+                    Text("Files")
+                        .accessibilityLabel("Local files window")
+                        .accessibilityHint("By pressing the files icon, you will be able to import local files and be able to upload them to the cloud. From there, you will then be able to listen to your songs through the Uploaded Music page")
+                }
             }
         }
-    }
+ //   }
 }
 
 

@@ -22,6 +22,8 @@ struct UploadedMusicView: View {
     // storage of curralbum moved out of struct and into shared storage managed by swiftui
     @State private var currentAlbum : Album?
     
+    var animationAmt = 2
+    @State var isPlayerViewPresented = false // boolean to keep track of whether player view is present or not
     // creates the order/position of column (modify spacing if needed) 4 lazyvgrid
     let columns = [
         GridItem(.flexible(), spacing: 10),
@@ -52,6 +54,14 @@ struct UploadedMusicView: View {
                     }
                 )
             )
+        }
+        .overlay(
+                NowPlayingBar(isPlayerViewPresented: self.$isPlayerViewPresented)
+                    .animation(.default, value: animationAmt)
+                        // .animation(.default) // add animation to the bar when it appears or disappears
+        )
+        .onDisappear {
+                self.isPlayerViewPresented = false // set boolean to false when leaving the view
         }
     }
 }
