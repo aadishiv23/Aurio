@@ -4,18 +4,19 @@
 //
 //  Created by Aadi Shiv Malhotra on 4/10/23.
 //
-
+ 
 import Foundation
 import SwiftUI
 import AVKit
 
 struct NowPlayingBar: View {
+    //var content : Content
     @Binding var isPlayerViewPresented: Bool // boolean to keep track of whether player view is present or not
     //let nowPlaying: (album: Album, song: Song)
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
+            ZStack(alignment: .bottom) {
                 Color.black
                     .opacity(0.7) // set the background color and opacity of the bar
                 HStack {
@@ -31,6 +32,7 @@ struct NowPlayingBar: View {
                 }
                 .foregroundColor(.white)
                 .padding()
+                //content
             }
             .frame(width: geometry.size.width, height: 50)
             .offset(y: self.isPlayerViewPresented ? 0 : geometry.size.height) // offset the bar to bottom when not presented

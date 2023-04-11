@@ -88,6 +88,30 @@ struct AlbumObj : View {
     }
 }
 
+struct DynAlbumObj : View {
+    var album : Album
+    var isWithText : Bool
+    var inputWidth : CGFloat
+    var inputHeight : CGFloat
+    
+    @ObservedObject var data : internalData
+    var body: some View {
+         ZStack(alignment: .bottom, content:  {
+             Image(album.image)
+                 .resizable()
+                 .aspectRatio(contentMode: .fill)
+                 .frame(width: inputWidth, height: inputHeight, alignment: .center)
+        
+             if isWithText == true {
+                 ZStack {
+                     Blur(style: .prominent)
+                     Text(album.name).foregroundColor(.white)
+                 }.frame(height: 60, alignment: .center)
+             }
+         }).frame(width: inputWidth, height: inputHeight, alignment: .center).cornerRadius(15).shadow(radius: 20).padding(20)
+    }
+}
+
 
 // Interactible Album cover object
 struct AlbumArt : View {

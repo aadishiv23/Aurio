@@ -49,16 +49,17 @@ struct PlayerView : View {
             Blur(style: .systemChromeMaterialDark).edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer()
-                AlbumObj(album: album, isWithText: false, data: data)
+                DynAlbumObj(album: album, isWithText: false, inputWidth: albumArtSize, inputHeight: albumArtSize, data: data)
+                //AlbumObj(album: album, isWithText: false, data: data)
                     //.scaledToFit()
                     //.frame(width: albumArtSize, height: albumArtSize)
                     //.animation(.easeInOut, value: 0.5)
                 //Image(album.image).scaledToFit().frame(width: albumArtSize, height: albumArtSize).animation(.easeInOut(duration: 0.8), value: 0.5)
                 Spacer()
-                Text(song.name).font(.title).fontWeight(.bold).foregroundColor(.white)
-                Spacer().padding(20)
+                Text(song.name).font(.title).fontWeight(.bold).foregroundColor(.white).padding(5)
+                Spacer().padding(10)
                 ZStack {
-                    Color.gray.cornerRadius(20).shadow(radius: 10).edgesIgnoringSafeArea(.bottom)
+                    Color.gray.cornerRadius(20).shadow(radius: 10).edgesIgnoringSafeArea(.bottom).opacity(0.8)
                     
                     
                     VStack {
@@ -74,13 +75,13 @@ struct PlayerView : View {
                             //Capsule().fill(Color.blue).frame(width: self.width, height: 8)
                             
                         }.padding()
-                        HStack {
+                        HStack(spacing: 5) {
                             Button(action: self.previous, label: { Image(systemName: "backward.fill").resizable()
-                            }).frame(width: 35, height: 25, alignment: .center).foregroundColor(Color.black.opacity(0.6))
-                            Button(action: self.playPause, label: { Image(systemName: isPlaying ? "pause.fill" : "play.fill").resizable().padding()
-                            }).frame(width: 80, height: 80, alignment: .center).foregroundColor(Color.black.opacity(0.6))
+                            }).frame(width: 35, height: 25, alignment: .center).foregroundColor(Color.white.opacity(0.6)).padding(5)
+                            Button(action: self.playPause, label: { Image(systemName: isPlaying ? "pause.fill" : "play.fill").resizable()
+                            }).frame(width: 60, height: 60, alignment: .center).foregroundColor(Color.white.opacity(0.6)).padding(5)
                             Button(action: self.next, label: { Image(systemName: "forward.fill").resizable()
-                            }).frame(width: 35, height: 25, alignment: .center).foregroundColor(Color.black.opacity(0.6))
+                            }).frame(width: 35, height: 25, alignment: .center).foregroundColor(Color.white.opacity(0.6)).padding(5)
                         }
                         HStack(spacing: 22) {
                             /*Image(systemName: "speaker.fill")
@@ -150,12 +151,12 @@ struct PlayerView : View {
     func playPause() {
         self.isPlaying.toggle()
         if isPlaying == false {
-            albumArtSize = 100
+            albumArtSize = 250
             player.pause()
         }
         else {
             player.play()
-            albumArtSize = 120
+            albumArtSize = 280
         }
     }
     

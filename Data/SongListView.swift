@@ -32,23 +32,22 @@ struct SongListView : View {
     
     var body: some View {
         ZStack {
-            Image(album.image).resizable().opacity(0.5)
-            Blur(style: .prominent).edgesIgnoringSafeArea(.all)
+            Image(album.image).resizable().edgesIgnoringSafeArea(.all)
+            Blur(style: .systemChromeMaterialDark).edgesIgnoringSafeArea(.all)
             VStack {
                 ScrollView {
                     //Spacer()
                     AlbumObj(album: album, isWithText: false, data: data)
-                    Text(album.name).font(.title).fontWeight(.bold).foregroundColor(.black)
+                    Text(album.name).font(.title).fontWeight(.bold).foregroundColor(.white)
                     Spacer().padding(40)
                     ScrollView {
                         ZStack {
-                            
                             // Color.white.cornerRadius(20).shadow(radius: 10).edgesIgnoringSafeArea(.bottom)
                             RoundedRectangle(cornerRadius: 20)
                                 .fill(Color.white)
                                 .shadow(radius: 10)
                                 .clipShape(RoundedCorners(radius: 20, corners: [.topLeft, .topRight]))
-                                .edgesIgnoringSafeArea(.bottom)
+                            //.edgesIgnoringSafeArea(.bottom)
                             VStack {
                                 if self.data.albums.first == nil {
                                     EmptyView()
@@ -62,12 +61,13 @@ struct SongListView : View {
                                         SongCell(album : currentAlbum ?? album , song: song, data: data).accessibilityLabel("The song \(song.name) which has a length of \(song.time)")
                                     })
                                 }
-                            }.edgesIgnoringSafeArea(.bottom)
+                             
+                            }
                             Spacer()
                         }
-                        Spacer()
+                        //Spacer()
                     }/*.edgesIgnoringSafeArea(.bottom).frame( height: 200, alignment: .center)*/
-                }
+               }
             }
         }
         .overlay(
