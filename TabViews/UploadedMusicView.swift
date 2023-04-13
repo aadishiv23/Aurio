@@ -55,14 +55,14 @@ struct UploadedMusicView: View {
                 )
             )
         }
-        .overlay(
+        /*.overlay(
                 NowPlayingBar(isPlayerViewPresented: self.$isPlayerViewPresented)
                     .animation(.default, value: animationAmt)
                         // .animation(.default) // add animation to the bar when it appears or disappears
         )
         .onDisappear {
                 self.isPlayerViewPresented = false // set boolean to false when leaving the view
-        }
+        }*/
     }
 }
 
