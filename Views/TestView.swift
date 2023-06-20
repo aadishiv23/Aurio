@@ -11,13 +11,20 @@ import SwiftUI
 struct TestView: View{
     var body : some View {
         ZStack {
+            
             Rectangle().foregroundColor(Color.white).frame(width: UIScreen.main.bounds.size.width, height: 65).opacity(0.95)
+                .blur(radius: 1)
             //Blur(style: .systemChromeMaterialDark).edgesIgnoringSafeArea(.all)
             HStack {
                 Button(action: {}) {
-                    HStack {
+                    HStack() {
                         Image("album1").resizable().frame(width: 45, height: 45).shadow(radius: 6, x: 0, y: 3).padding(.leading)
-                        Text("After Hours").padding(.leading, 10)
+                        if #available(iOS 16.0, *) {
+                            Text("After Hours").padding(.leading, 20).bold()
+                        } else {
+                            Text("After Hours").padding(.leading, 20)
+                            // Fallback on earlier versions
+                        }
                         Spacer()
                     }
                 }.buttonStyle(PlainButtonStyle())

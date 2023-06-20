@@ -31,21 +31,23 @@ struct SongListView : View {
     var animationAmt = 2
     
     var body: some View {
+        
         ZStack {
-            Image(album.image).resizable().edgesIgnoringSafeArea(.all)
-            Blur(style: .systemChromeMaterialDark).edgesIgnoringSafeArea(.all)
+            Color.white
+            //Image(album.image).resizable().edgesIgnoringSafeArea(.all)
+            Blur(style: .systemUltraThinMaterial).edgesIgnoringSafeArea(.all)
             VStack {
                 ScrollView {
                     //Spacer()
                     AlbumObj(album: album, isWithText: false, data: data)
-                    Text(album.name).font(.title).fontWeight(.bold).foregroundColor(.white)
-                    Spacer().padding(40)
-                    ScrollView {
+                    Text(album.name).font(.title).fontWeight(.bold).foregroundColor(.black)
+                    Spacer().padding(20)
+                    ZStack {
                         ZStack {
                             // Color.white.cornerRadius(20).shadow(radius: 10).edgesIgnoringSafeArea(.bottom)
                             RoundedRectangle(cornerRadius: 20)
                                 .fill(Color.white)
-                                .shadow(radius: 10)
+                                //.shadow(radius: 10)
                                 .clipShape(RoundedCorners(radius: 20, corners: [.topLeft, .topRight]))
                             //.edgesIgnoringSafeArea(.bottom)
                             VStack {
@@ -61,7 +63,7 @@ struct SongListView : View {
                                         SongCell(album : currentAlbum ?? album , song: song, data: data).accessibilityLabel("The song \(song.name) which has a length of \(song.time)")
                                     })
                                 }
-                             
+                                
                             }
                             Spacer()
                         }
@@ -70,14 +72,14 @@ struct SongListView : View {
                }
             }
         }
-        .overlay(
+        /*.overlay(
                 NowPlayingBar(isPlayerViewPresented: self.$isPlayerViewPresented)
                     .animation(.default, value: animationAmt)
                         // .animation(.default) // add animation to the bar when it appears or disappears
         )
         .onDisappear {
                 self.isPlayerViewPresented = false // set boolean to false when leaving the view
-        }
+        }*/
     }
 }
 

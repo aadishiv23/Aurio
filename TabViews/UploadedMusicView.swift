@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct UploadedMusicView: View {
+    
     // Helpful Hacking With Swift article
     // https://www.hackingwithswift.com/quick-start/swiftui/what-is-the-observedobject-property-wrapper
     // Essentially this property wrapper makes it so that view can "watch" the state of an external object
@@ -148,19 +149,17 @@ struct SongCell : View {
         NavigationLink(
             destination: PlayerView(album: album, song: song, data: data),
             label:  {
-                ZStack {
-                    //Color.white.opacity(0.2).cornerRadius(20).shadow(radius: 10).padding(2)
-                    HStack {
-                        ZStack {
-                            Image(systemName: "play.fill").frame(width: 60, height: 60, alignment: .center).foregroundColor(.blue)
-                            /*Circle().frame(width: 45, height: 45, alignment: .center).foregroundColor(.blue)
-                            Circle().frame(width: 15, height: 15, alignment: .center).foregroundColor(.white)*/
-                        }
-                        Text(song.name).bold().foregroundColor(.black)
-                        Spacer()
-                        Text(song.time).bold().foregroundColor(.black)
-                    }.padding(20)
-                }
+                //Color.white.opacity(0.2).cornerRadius(20).shadow(radius: 10).padding(2)
+                HStack {
+                    ZStack {
+                        Image(systemName: "play.fill").frame(width: 60, height: 60, alignment: .center).foregroundColor(.blue)
+                        /*Circle().frame(width: 45, height: 45, alignment: .center).foregroundColor(.blue)
+                        Circle().frame(width: 15, height: 15, alignment: .center).foregroundColor(.white)*/
+                    }
+                    Text(song.name).bold().foregroundColor(.black)
+                    Spacer()
+                    Text(song.time).bold().foregroundColor(.black)
+                }.padding(10)
             }).buttonStyle(PlainButtonStyle())
     }
 }

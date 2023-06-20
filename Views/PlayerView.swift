@@ -28,19 +28,20 @@ struct VolumeSlider: UIViewRepresentable {
 struct PlayerView : View {
     @State var album : Album
     @State var song : Song
-    @State var player = AVPlayer()
+    @State var player = AVAudioPlayer()
     @State var volume : CGFloat = 0
     @State var position : CGFloat = 0
     @State var width : CGFloat = 0
     @State var isPlaying : Bool = false
+    // @Obs var playingOrNo : PlayingStatus
     @State var songLength = 0
     @State var clickCount = 0
     @State private var albumArtSize: CGFloat = 100 // default size
     // var slider : UISlider!
     
-    var nowPlaying: (album: Album, song: Song) {
+    /*var nowPlaying: (album: Album, song: Song) {
         return (album, song)
-    }
+    }*/
     
     @ObservedObject var data : internalData
     var body: some View {
@@ -49,7 +50,7 @@ struct PlayerView : View {
             Blur(style: .systemChromeMaterialDark).edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer()
-                DynAlbumObj(album: album, isWithText: false, inputWidth: albumArtSize, inputHeight: albumArtSize, data: data)
+                DynAlbumObj(album: album, isWithText: false, inputWidth: 250, inputHeight: 250, data: data)
                 //AlbumObj(album: album, isWithText: false, data: data)
                     //.scaledToFit()
                     //.frame(width: albumArtSize, height: albumArtSize)
@@ -59,7 +60,7 @@ struct PlayerView : View {
                 Text(song.name).font(.title).fontWeight(.bold).foregroundColor(.white).padding(5)
                 Spacer().padding(10)
                 ZStack {
-                    Color.gray.cornerRadius(20).shadow(radius: 10).edgesIgnoringSafeArea(.bottom).opacity(0.8)
+                    Color.white.cornerRadius(20).shadow(radius: 10).edgesIgnoringSafeArea(.bottom).opacity(0.8)
                     
                     
                     VStack {
@@ -76,12 +77,17 @@ struct PlayerView : View {
                             
                         }.padding()
                         HStack(spacing: 5) {
+                            Spacer().frame(width: 40) // Add a fixed-size spacer before the backward button
                             Button(action: self.previous, label: { Image(systemName: "backward.fill").resizable()
-                            }).frame(width: 35, height: 25, alignment: .center).foregroundColor(Color.white.opacity(0.6)).padding(5)
+                            }).frame(width: 35, height: 25, alignment: .center).foregroundColor(Color.black.opacity(0.6)).padding(5)
+                            Spacer()
                             Button(action: self.playPause, label: { Image(systemName: isPlaying ? "pause.fill" : "play.fill").resizable()
-                            }).frame(width: 60, height: 60, alignment: .center).foregroundColor(Color.white.opacity(0.6)).padding(5)
+                            }).frame(width: 60, height: 60, alignment: .center).foregroundColor(Color.black.opacity(0.6)).padding(5)
+                            Spacer()
                             Button(action: self.next, label: { Image(systemName: "forward.fill").resizable()
-                            }).frame(width: 35, height: 25, alignment: .center).foregroundColor(Color.white.opacity(0.6)).padding(5)
+                            }).frame(width: 35, height: 25, alignment: .center).foregroundColor(Color.black.opacity(0.6)).padding(5)
+                            Spacer().frame(width: 40) // Add a fixed-size spacer before the backward button
+
                         }
                         HStack(spacing: 22) {
                             /*Image(systemName: "speaker.fill")
@@ -89,13 +95,14 @@ struct PlayerView : View {
                             Image(systemName: "speaker.wave.2.fill")*/
                             VolumeSlider().padding()
                             
-                        }.padding()
+                        }
                     }
+                    .padding()
                 }.edgesIgnoringSafeArea(.bottom).frame( height: 250, alignment: .center)
             }
         }.onAppear() {
             self.playSong()
-            self.playPause()
+            //self.playPause()
         }
     }
     // Designates a storage constant obj (FirebaseStorage by getting the url for a song from Firebase)
@@ -114,7 +121,12 @@ struct PlayerView : View {
                 }
                 
                 songLength = Int(song.time) ?? 0
-                player = AVPlayer(url: url!)
+                do {
+                    player = try AVAudioPlayer(contentsOf: url!)
+                } catch let error {
+                    print(error)
+                } 
+                // player = AVPlayer(url: url!)
                 player.play()
                 Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (_) in
                     if isPlaying {
@@ -135,10 +147,50 @@ struct PlayerView : View {
             }
         }
     }
+    /*func playSong() {
+        let storage = Storage.storage().reference(forURL: self.song.file)
+        
+        storage.downloadURL { result in
+            switch result {
+            case .success(let url):
+                do {
+                    try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+                } catch {
+                    // report for error
+                }
+                songLength = Int(song.time) ?? 0
+                do {
+                    player = try AVAudioPlayer(contentsOf: url)
+                } catch let error {
+                    print(error)
+                }                //player = AVPlayer(url: url!)
+                player.play()
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (_) in
+                    if isPlaying {
+                        // test  print(self.player.currentTime())
+                        position += 1
+                        var cgFloat: CGFloat?
+                        let screen = UIScreen.main.bounds.width - 30
+                        let doubleValue = Double(song.time)
+                        cgFloat = CGFloat(doubleValue ?? 50)
+                        /*if let doubleValue = Double(song.time) {
+                            cgFloat = CGFloat(doubleValue)
+                        }*/
+                        let value = position / cgFloat!
+                        self.width = screen * (doubleValue ?? 120)
+                        //player.seek(to: position)
+                    }
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }*/
+
     
     func changeAudioTime() {
         player.pause()
-        player.currentTime()
+       //  player.
         
     }
     
@@ -228,6 +280,10 @@ struct PlayerView : View {
             }
         }
     }
+}
+
+struct PlayingStatus {
+     var status = false
 }
 
 //struct PlayerView_Preview: PreviewProvider {

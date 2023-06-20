@@ -34,6 +34,7 @@ struct ContentView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
+            
             TabView() {
                 UploadedMusicView(data: data).tabItem() {
                     Image(systemName: "house")
@@ -51,14 +52,35 @@ struct ContentView: View {
             .navigationBarHidden(true)
             .background(Color.white)
             .edgesIgnoringSafeArea(.bottom)
-
+            /*.background(BlurView(style: .systemMaterial))
+             .edgesIgnoringSafeArea(.all)*/
             TestView()
                 //.background(Color.white)
                 .offset(y: -48) // replace `TabViewHeight` with the height of the TabView
+                /*.background(BlurView(style: .systemMaterial))
+                .edgesIgnoringSafeArea(.all)*/
         }
     }
 }
 
+struct VisualEffectView: UIViewRepresentable {
+    var effect: UIVisualEffect?
+    func makeUIView(context: UIViewRepresentableContext<Self>) -> UIVisualEffectView { UIVisualEffectView() }
+    func updateUIView(_ uiView: UIVisualEffectView, context: UIViewRepresentableContext<Self>) { uiView.effect = effect }
+}
+
+/*struct BlurView: UIViewRepresentable {
+    var style: UIBlurEffect.Style
+    
+    func makeUIView(context: Context) -> UIVisualEffectView {
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: style))
+        return view
+    }
+    
+    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
+        uiView.effect = UIBlurEffect(style: style)
+    }
+}*/
 
 /*struct ContentView: View {
     @ObservedObject var data : internalData
